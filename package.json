@@ -1,0 +1,19 @@
+{
+  "devDependencies": {
+    "@types/jest": "^26.0.23",
+    "@types/uuid": "^8.3.0",
+    "eslint": "^7.27.0",
+    "jest": "^27.0.4",
+    "prettier": "^2.3.0",
+    "ts-jest": "^27.0.2",
+    "typescript": "^4.3.2"
+  },
+  "dependencies": {
+    "ts-node": "^10.0.0",
+    "uuid": "^8.3.2"
+  },
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watchAll"
+  }
+}
