@@ -23,6 +23,6 @@ export const CommaKind = RegExpTokenKind('ParenRight', /^,/);
 
 export const SemicolonKind = RegExpTokenKind('ParenRight', /^;/);
 
-export const TextBlockKind = RegExpTokenKind('TextBlock', /^<<(.|\n)+>>/);
+export const TextBlockKind = RegExpTokenKind('TextBlock', /^<<(.|\n)+?>>/);
 
 export const AtomKind = RegExpTokenKind('Atom', /^[^ \n\t\{\}\[\]\(\)\,\;]+/);

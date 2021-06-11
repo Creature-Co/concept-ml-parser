@@ -1,10 +1,14 @@
 import { parseConcepts } from './lang/parser';
 
 // One big test case to start, to be refactored into smaller tests later.
-describe('given complicated CXL source', () => {
-  const textBlock = `<<
+describe('given complicated ConceptML source', () => {
+  const textBlock1 = `<<
       Fun, a block of text!
     >> text block`;
+
+  const textBlock2 = `<<
+        Another block of text!
+      >> text block`;
 
   const source = `
     {john, mary} (person) {
@@ -18,7 +22,8 @@ describe('given complicated CXL source', () => {
       programmer
     }
 
-    ${textBlock}
+    ${textBlock1}
+    ${textBlock2}
   `;
 
   describe('when it is parsed', () => {
@@ -40,7 +45,8 @@ describe('given complicated CXL source', () => {
         'javascript for [frontend development]',
         'javascript for [backend development]',
         'python for [general purpose programming]',
-        textBlock,
+        textBlock1,
+        textBlock2,
       ].sort();
 
       expect(output).toMatchObject(expected);
