@@ -60,7 +60,7 @@ This would expand to:
 ```
 <<Concept Engine>> used-for knowledge-graph
 <<Concept Engine>> used-for automation
-<<Concept Engine>> uses concept-ml
+<<Concept Engine>> uses <<ConceptML>>
 <<ConceptML>> markup-language
 ```
 
