@@ -49,4 +49,4 @@ describe('given complicated ConceptML source', () => {
         });
     });
 });
-//# sourceMappingURL=lang.test.js.map
+//# sourceMappingURL=index.test.js.map

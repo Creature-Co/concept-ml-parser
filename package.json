@@ -1,5 +1,5 @@
 {
-  "name": "@creature/concept-ml-parser",
+  "name": "@creatureco/concept-ml-parser",
   "main": "./dist/index.js",
   "devDependencies": {
     "@types/jest": "^26.0.23",

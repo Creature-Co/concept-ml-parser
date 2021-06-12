@@ -1,19 +1,19 @@
-# concept-ml-parser
+# @creature/concept-ml-parser
 
 A parser for ConceptML, a language for expressing recursive hyperedges as plain text.
 
 ## Installation
 
 ```bash
-npm i -s @creature/concept-ml-parser
+npm i -s @creatureco/concept-ml-parser
 # or
-yarn add @creature/concept-ml-parser
+yarn add @creatureco/concept-ml-parser
 ```
 
 ## Usage
 
 ```typescript
-import { parseConcepts } from '@creature/concept-ml';
+import { parseConcepts } from '@creatureco/concept-ml';
 
 const { concepts } = parseConcepts(`
   john {
