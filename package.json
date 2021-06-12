@@ -1,5 +1,6 @@
 {
   "name": "@creature/concept-ml-parser",
+  "main": "./dist/index.js",
   "devDependencies": {
     "@types/jest": "^26.0.23",
     "@types/uuid": "^8.3.0",
@@ -15,6 +16,7 @@
   },
   "scripts": {
     "test": "jest",
-    "test:watch": "jest --watchAll"
+    "test:watch": "jest --watchAll",
+    "build": "tsc"
   }
 }
