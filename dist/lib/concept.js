@@ -25,11 +25,12 @@ const UUID_NAMESPACE_OID = '6ba7b812-9dad-11d1-80b4-00c04fd430c8';
 class Concept {
     constructor(inputs) {
         const parts = inputs.parts || [];
-        const text = parts.length > 0 ? Concept.join(inputs.parts) : inputs.text || '';
+        const text = parts.length > 0
+            ? Concept.join(inputs.parts)
+            : inputs.text || '';
         this.id = uuid.v5(text, UUID_NAMESPACE_OID);
         this.text = text;
         this.parts = parts;
-        this.token = inputs.token;
     }
     static createAtom(text) {
         return new Concept({ text });
@@ -51,6 +52,9 @@ class Concept {
         return parts
             .map((part) => (part.parts.length >= 2 ? `[${part.text}]` : part.text))
             .join(' ');
+    }
+    toString() {
+        return this.text;
     }
 }
 exports.Concept = Concept;

@@ -26,6 +26,7 @@ const ast_1 = require("./ast");
 const tokenKinds = __importStar(require("./token-kinds"));
 const util_1 = require("../lib/util");
 const parseConcepts = (source) => {
+    source = Array.isArray(source) ? source.join('\n') : source;
     const tokens = token_1.tokenize(source, Object.values(tokenKinds));
     const ast = ast_1.parseAST(tokens);
     const tokenTree = exports.astToTokenTree(ast);
