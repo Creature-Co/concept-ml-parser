@@ -9,24 +9,26 @@ export class Concept {
   id: string;
   text: string;
   parts: ConceptSequence;
-  token?: Token;
 
-  constructor(inputs: { text?: string; parts?: Concept[]; token?: Token }) {
+  constructor(inputs: { text?: string; parts?: Concept[] }) {
     const parts = inputs.parts || [];
     const text =
-      parts.length > 0 ? Concept.join(inputs.parts) : inputs.text || '';
+      parts.length > 0
+        ? Concept.join(inputs.parts as Concept[])
+        : inputs.text || '';
 
     this.id = uuid.v5(text, UUID_NAMESPACE_OID);
     this.text = text;
     this.parts = parts;
-    this.token = inputs.token;
   }
 
-  static createAtom(text: string) {
+  static createAtom(text: string): Concept {
     return new Concept({ text });
   }
 
-  static createCompound(parts: (Concept | ConceptSequence | string)[]) {
+  static createCompound(
+    parts: (Concept | ConceptSequence | string)[],
+  ): Concept {
     return new Concept({
       parts: parts.map((part) => {
         if (Array.isArray(part)) {
@@ -46,6 +48,10 @@ export class Concept {
     return parts
       .map((part) => (part.parts.length >= 2 ? `[${part.text}]` : part.text))
       .join(' ');
+  }
+
+  toString() {
+    return this.text;
   }
 }
 

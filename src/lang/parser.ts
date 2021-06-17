@@ -25,7 +25,11 @@ export interface ParseConceptsResult {
 
 export type TokenTree = (Token | TokenTree)[];
 
-export const parseConcepts = (source: string): ParseConceptsResult => {
+export const parseConcepts = (
+  source: string | string[],
+): ParseConceptsResult => {
+  source = Array.isArray(source) ? source.join('\n') : source;
+
   const tokens = tokenize(source, Object.values(tokenKinds));
   const ast = parseAST(tokens);
   const tokenTree = astToTokenTree(ast);
