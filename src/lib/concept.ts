@@ -17,9 +17,13 @@ export class Concept {
         ? Concept.join(inputs.parts as Concept[])
         : inputs.text || '';
 
-    this.id = uuid.v5(text, UUID_NAMESPACE_OID);
+    this.id = Concept.idFromText(text);
     this.text = text;
     this.parts = parts;
+  }
+
+  static idFromText(text: string): string {
+    return uuid.v5(text, UUID_NAMESPACE_OID);
   }
 
   static createAtom(text: string): Concept {
