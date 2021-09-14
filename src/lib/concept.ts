@@ -58,6 +58,8 @@ export class Concept {
   }
 }
 
+export const NULL_CONCEPT = Concept.createAtom('');
+
 export const filterUniqueConcepts = (concepts: Concept[]): Concept[] => {
   const map = new Map<string, Concept>();
   concepts.forEach((concept) => map.set(concept.id, concept));

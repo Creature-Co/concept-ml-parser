@@ -1,5 +1,5 @@
 import { Token, tokenize } from '../lib/token';
-import { Concept, filterUniqueConcepts } from '../lib/concept';
+import { Concept, filterUniqueConcepts, NULL_CONCEPT } from '../lib/concept';
 import { parseAST } from './ast';
 import * as tokenKinds from './token-kinds';
 import { combine } from '../lib/util';
@@ -37,7 +37,7 @@ export const parseConcepts = (source: string | string[]): Concept[] => {
 };
 
 export const parseConcept = (source: string): Concept | null => {
-  return parseConcepts(source)[0] || null;
+  return parseConcepts(source)[0] || NULL_CONCEPT;
 };
 
 export const tokenTreeToConcept = (tokenTree: TokenTree): Concept | null => {

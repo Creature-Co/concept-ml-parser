@@ -1,3 +1,5 @@
+import { Concept } from '..';
+
 export interface VisitorContext<T> {
   item: T;
   prev?: T;
@@ -45,4 +47,8 @@ export const visitEach = <T = any>(
       },
     });
   });
+};
+
+export const isNullConcept = (concept: Concept): boolean => {
+  return concept.text === '';
 };
