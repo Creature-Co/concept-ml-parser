@@ -25,9 +25,7 @@ export interface ParseConceptsResult {
 
 export type TokenTree = (Token | TokenTree)[];
 
-export const parseConcepts = (
-  source: string | string[],
-): ParseConceptsResult => {
+export const parseConcepts = (source: string | string[]): Concept[] => {
   source = Array.isArray(source) ? source.join('\n') : source;
 
   const tokens = tokenize(source, Object.values(tokenKinds));
@@ -35,13 +33,11 @@ export const parseConcepts = (
   const tokenTree = astToTokenTree(ast);
   const concepts = filterUniqueConcepts(tokenTree.map(tokenTreeToConcept));
 
-  return {
-    source,
-    tokens,
-    ast,
-    tokenTree,
-    concepts,
-  };
+  return concepts;
+};
+
+export const parseConcept = (source: string): Concept | null => {
+  return parseConcepts(source)[0] || null;
 };
 
 export const tokenTreeToConcept = (tokenTree: TokenTree): Concept | null => {
