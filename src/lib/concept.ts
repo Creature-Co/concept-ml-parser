@@ -1,5 +1,4 @@
 import * as uuid from 'uuid';
-import { Token } from './token';
 
 const UUID_NAMESPACE_OID = '6ba7b812-9dad-11d1-80b4-00c04fd430c8';
 
@@ -63,4 +62,42 @@ export const filterUniqueConcepts = (concepts: Concept[]): Concept[] => {
   const map = new Map<string, Concept>();
   concepts.forEach((concept) => map.set(concept.id, concept));
   return Array.from(map.values());
+};
+
+export const getConceptsDeep = (topConcepts: Concept[]): Concept[] => {
+  const map = new Map<string, Concept>();
+
+  topConcepts.forEach((c) => {
+    map.set(c.id, c);
+    getConceptsDeep(c.parts).forEach((sub) => {
+      map.set(sub.id, sub);
+    });
+  });
+
+  return Array.from(map.values());
+};
+
+export const isAtom = (concept: Concept): boolean => {
+  return concept.parts.length === 0;
+};
+
+export const isVariable = (concept: Concept): boolean => {
+  return isAtom(concept) && concept.text[0] === '$';
+};
+
+export const isPattern = (concept: Concept): boolean => {
+  return (
+    isCompound(concept) &&
+    concept.parts.some((part) => {
+      return isVariable(part) || isPattern(part);
+    })
+  );
+};
+
+export const isCompound = (concept: Concept): boolean => {
+  return concept.parts.length > 1;
+};
+
+export const isTextBlock = (concept: Concept): boolean => {
+  return concept.text.slice(0, 2) + concept.text.slice(-2) === '<<>>';
 };

@@ -15,7 +15,7 @@ yarn add @creatureco/concept-ml-parser
 ```typescript
 import { parseConcepts } from '@creatureco/concept-ml';
 
-const { concepts } = parseConcepts(`
+const concepts = parseConcepts(`
   john {
     knows {
       c++
