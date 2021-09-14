@@ -36,7 +36,7 @@ export const parseConcepts = (source: string | string[]): Concept[] => {
   return concepts;
 };
 
-export const parseConcept = (source: string): Concept | null => {
+export const parseConcept = (source: string): Concept => {
   return parseConcepts(source)[0] || NULL_CONCEPT;
 };
 
