@@ -26,7 +26,7 @@ export const tokenize = (source: string, tokenKinds: TokenKind[]) => {
   let start: Position = {
     offset: 0,
     line: 1,
-    column: 0,
+    column: 1,
   };
 
   const matchToken = (input: string): Token | null => {
