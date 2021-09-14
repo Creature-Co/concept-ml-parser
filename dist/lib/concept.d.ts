@@ -13,6 +13,7 @@ export declare class Concept {
     static join(parts: Concept[]): string;
     toString(): string;
 }
+export declare const NULL_CONCEPT: Concept;
 export declare const filterUniqueConcepts: (concepts: Concept[]) => Concept[];
 export declare const getConceptsDeep: (topConcepts: Concept[]) => Concept[];
 export declare const isAtom: (concept: Concept) => boolean;

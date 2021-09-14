@@ -35,7 +35,7 @@ const parseConcepts = (source) => {
 };
 exports.parseConcepts = parseConcepts;
 const parseConcept = (source) => {
-    return exports.parseConcepts(source)[0] || null;
+    return exports.parseConcepts(source)[0] || concept_1.NULL_CONCEPT;
 };
 exports.parseConcept = parseConcept;
 const tokenTreeToConcept = (tokenTree) => {

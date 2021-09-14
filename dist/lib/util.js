@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.visitEach = exports.combine = void 0;
+exports.isNullConcept = exports.visitEach = exports.combine = void 0;
 const combine = (left, right) => {
     if (left.length === 0) {
         return right;
@@ -35,4 +35,8 @@ const visitEach = (items, visitor) => {
     });
 };
 exports.visitEach = visitEach;
+const isNullConcept = (concept) => {
+    return concept.text === '';
+};
+exports.isNullConcept = isNullConcept;
 //# sourceMappingURL=util.js.map

@@ -19,7 +19,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isTextBlock = exports.isCompound = exports.isPattern = exports.isVariable = exports.isAtom = exports.getConceptsDeep = exports.filterUniqueConcepts = exports.Concept = void 0;
+exports.isTextBlock = exports.isCompound = exports.isPattern = exports.isVariable = exports.isAtom = exports.getConceptsDeep = exports.filterUniqueConcepts = exports.NULL_CONCEPT = exports.Concept = void 0;
 const uuid = __importStar(require("uuid"));
 const UUID_NAMESPACE_OID = '6ba7b812-9dad-11d1-80b4-00c04fd430c8';
 class Concept {
@@ -61,6 +61,7 @@ class Concept {
     }
 }
 exports.Concept = Concept;
+exports.NULL_CONCEPT = Concept.createAtom('');
 const filterUniqueConcepts = (concepts) => {
     const map = new Map();
     concepts.forEach((concept) => map.set(concept.id, concept));
