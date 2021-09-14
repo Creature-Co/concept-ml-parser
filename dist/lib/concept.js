@@ -19,7 +19,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.filterUniqueConcepts = exports.Concept = void 0;
+exports.isTextBlock = exports.isCompound = exports.isPattern = exports.isVariable = exports.isAtom = exports.getConceptsDeep = exports.filterUniqueConcepts = exports.Concept = void 0;
 const uuid = __importStar(require("uuid"));
 const UUID_NAMESPACE_OID = '6ba7b812-9dad-11d1-80b4-00c04fd430c8';
 class Concept {
@@ -28,9 +28,12 @@ class Concept {
         const text = parts.length > 0
             ? Concept.join(inputs.parts)
             : inputs.text || '';
-        this.id = uuid.v5(text, UUID_NAMESPACE_OID);
+        this.id = Concept.idFromText(text);
         this.text = text;
         this.parts = parts;
+    }
+    static idFromText(text) {
+        return uuid.v5(text, UUID_NAMESPACE_OID);
     }
     static createAtom(text) {
         return new Concept({ text });
@@ -64,4 +67,38 @@ const filterUniqueConcepts = (concepts) => {
     return Array.from(map.values());
 };
 exports.filterUniqueConcepts = filterUniqueConcepts;
+const getConceptsDeep = (topConcepts) => {
+    const map = new Map();
+    topConcepts.forEach((c) => {
+        map.set(c.id, c);
+        exports.getConceptsDeep(c.parts).forEach((sub) => {
+            map.set(sub.id, sub);
+        });
+    });
+    return Array.from(map.values());
+};
+exports.getConceptsDeep = getConceptsDeep;
+const isAtom = (concept) => {
+    return concept.parts.length === 0;
+};
+exports.isAtom = isAtom;
+const isVariable = (concept) => {
+    return exports.isAtom(concept) && concept.text[0] === '$';
+};
+exports.isVariable = isVariable;
+const isPattern = (concept) => {
+    return (exports.isCompound(concept) &&
+        concept.parts.some((part) => {
+            return exports.isVariable(part) || exports.isPattern(part);
+        }));
+};
+exports.isPattern = isPattern;
+const isCompound = (concept) => {
+    return concept.parts.length > 1;
+};
+exports.isCompound = isCompound;
+const isTextBlock = (concept) => {
+    return concept.text.slice(0, 2) + concept.text.slice(-2) === '<<>>';
+};
+exports.isTextBlock = isTextBlock;
 //# sourceMappingURL=concept.js.map

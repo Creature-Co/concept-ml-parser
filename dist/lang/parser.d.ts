@@ -9,7 +9,8 @@ export interface ParseConceptsResult {
     concepts: Concept[];
 }
 export declare type TokenTree = (Token | TokenTree)[];
-export declare const parseConcepts: (source: string | string[]) => ParseConceptsResult;
+export declare const parseConcepts: (source: string | string[]) => Concept[];
+export declare const parseConcept: (source: string) => Concept | null;
 export declare const tokenTreeToConcept: (tokenTree: TokenTree) => Concept | null;
 export declare const astToTokenTree: (root: ASTNode) => TokenTree;
 //# sourceMappingURL=parser.d.ts.map

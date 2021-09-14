@@ -19,7 +19,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.astToTokenTree = exports.tokenTreeToConcept = exports.parseConcepts = void 0;
+exports.astToTokenTree = exports.tokenTreeToConcept = exports.parseConcept = exports.parseConcepts = void 0;
 const token_1 = require("../lib/token");
 const concept_1 = require("../lib/concept");
 const ast_1 = require("./ast");
@@ -31,15 +31,13 @@ const parseConcepts = (source) => {
     const ast = ast_1.parseAST(tokens);
     const tokenTree = exports.astToTokenTree(ast);
     const concepts = concept_1.filterUniqueConcepts(tokenTree.map(exports.tokenTreeToConcept));
-    return {
-        source,
-        tokens,
-        ast,
-        tokenTree,
-        concepts,
-    };
+    return concepts;
 };
 exports.parseConcepts = parseConcepts;
+const parseConcept = (source) => {
+    return exports.parseConcepts(source)[0] || null;
+};
+exports.parseConcept = parseConcept;
 const tokenTreeToConcept = (tokenTree) => {
     if (tokenTree.length === 0) {
         return null;

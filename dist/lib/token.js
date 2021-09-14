@@ -6,7 +6,7 @@ const tokenize = (source, tokenKinds) => {
     let start = {
         offset: 0,
         line: 1,
-        column: 0,
+        column: 1,
     };
     const matchToken = (input) => {
         for (const kind of tokenKinds) {
