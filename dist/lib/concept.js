@@ -1,42 +1,28 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isTextBlock = exports.isCompound = exports.isPattern = exports.isVariable = exports.isAtom = exports.getConceptsDeep = exports.filterUniqueConcepts = exports.NULL_CONCEPT = exports.Concept = void 0;
-const uuid = __importStar(require("uuid"));
-const UUID_NAMESPACE_OID = '6ba7b812-9dad-11d1-80b4-00c04fd430c8';
 class Concept {
     constructor(inputs) {
         const parts = inputs.parts || [];
-        const text = parts.length > 0
+        const key = parts.length > 0
             ? Concept.join(inputs.parts)
-            : inputs.text || '';
-        this.id = Concept.idFromText(text);
-        this.text = text;
+            : inputs.key || '';
+        this.key = key;
         this.parts = parts;
+        this.shape = Concept.computeShape(this);
     }
-    static idFromText(text) {
-        return uuid.v5(text, UUID_NAMESPACE_OID);
+    static computeShape(concept) {
+        if (concept.parts.length === 0) {
+            return 0;
+        }
+        const subdims = concept.parts.map(Concept.computeShape);
+        if (subdims.every((dim) => dim === 0)) {
+            return subdims.length;
+        }
+        return subdims;
     }
-    static createAtom(text) {
-        return new Concept({ text });
+    static createAtom(key) {
+        return new Concept({ key });
     }
     static createCompound(parts) {
         return new Concept({
@@ -53,27 +39,27 @@ class Concept {
     }
     static join(parts) {
         return parts
-            .map((part) => (part.parts.length >= 2 ? `[${part.text}]` : part.text))
+            .map((part) => (part.parts.length >= 2 ? `[${part.key}]` : part.key))
             .join(' ');
     }
     toString() {
-        return this.text;
+        return this.key;
     }
 }
 exports.Concept = Concept;
 exports.NULL_CONCEPT = Concept.createAtom('');
 const filterUniqueConcepts = (concepts) => {
     const map = new Map();
-    concepts.forEach((concept) => map.set(concept.id, concept));
+    concepts.forEach((concept) => map.set(concept.key, concept));
     return Array.from(map.values());
 };
 exports.filterUniqueConcepts = filterUniqueConcepts;
 const getConceptsDeep = (topConcepts) => {
     const map = new Map();
     topConcepts.forEach((c) => {
-        map.set(c.id, c);
+        map.set(c.key, c);
         exports.getConceptsDeep(c.parts).forEach((sub) => {
-            map.set(sub.id, sub);
+            map.set(sub.key, sub);
         });
     });
     return Array.from(map.values());
@@ -84,7 +70,7 @@ const isAtom = (concept) => {
 };
 exports.isAtom = isAtom;
 const isVariable = (concept) => {
-    return exports.isAtom(concept) && concept.text[0] === '$';
+    return exports.isAtom(concept) && concept.key[0] === '$';
 };
 exports.isVariable = isVariable;
 const isPattern = (concept) => {
@@ -99,7 +85,7 @@ const isCompound = (concept) => {
 };
 exports.isCompound = isCompound;
 const isTextBlock = (concept) => {
-    return concept.text.slice(0, 2) + concept.text.slice(-2) === '<<>>';
+    return concept.key.slice(0, 2) + concept.key.slice(-2) === '<<>>';
 };
 exports.isTextBlock = isTextBlock;
 //# sourceMappingURL=concept.js.map

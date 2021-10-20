@@ -2,6 +2,26 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const parser_1 = require("../lang/parser");
 const concept_1 = require("./concept");
+describe('Concept class', () => {
+    describe('@shape', () => {
+        test('returns 0 for atom', () => {
+            const concept = concept_1.Concept.createAtom('test-atom');
+            expect(concept.shape).toStrictEqual(0);
+        });
+        test('returns 3 for shallow compound with 3 parts', () => {
+            const concept = parser_1.parseConcept('part1 part2 part3');
+            expect(concept.shape).toStrictEqual(3);
+        });
+        test('returns [0,2,0] for concept with a nested 2-compound surrounded by 2 atoms', () => {
+            const concept = parser_1.parseConcept('part1 [part2 part3] part4');
+            expect(concept.shape).toMatchObject([0, 2, 0]);
+        });
+        test('returns [0,2,[0,3]] for highly nested object', () => {
+            const concept = parser_1.parseConcept('part1 [part2 part3] [part4 [part5 part6 part7]]');
+            expect(concept.shape).toMatchObject([0, 2, [0, 3]]);
+        });
+    });
+});
 describe('Concept helpers', () => {
     describe('isAtom', () => {
         test('returns true for atoms', () => {

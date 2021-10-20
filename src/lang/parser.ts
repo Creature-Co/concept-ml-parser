@@ -40,6 +40,30 @@ export const parseConcept = (source: string): Concept => {
   return parseConcepts(source)[0] || NULL_CONCEPT;
 };
 
+export type KeyOrConcept = string | Concept;
+
+export type ConceptSetSource = string | Concept | (string | Concept)[];
+
+export const toConcept = (keyOrConcept: KeyOrConcept): Concept => {
+  if (keyOrConcept instanceof Concept) {
+    return keyOrConcept;
+  }
+
+  return Concept.createAtom(keyOrConcept);
+};
+
+export const toConcepts = (source: ConceptSetSource): Concept[] => {
+  if (Array.isArray(source)) {
+    return source.flatMap(toConcepts);
+  }
+
+  if (source instanceof Concept) {
+    return [source];
+  }
+
+  return parseConcepts(source);
+};
+
 export const tokenTreeToConcept = (tokenTree: TokenTree): Concept | null => {
   if (tokenTree.length === 0) {
     return null;

@@ -1,32 +1,40 @@
-import * as uuid from 'uuid';
-
-const UUID_NAMESPACE_OID = '6ba7b812-9dad-11d1-80b4-00c04fd430c8';
-
 export type ConceptSequence = Concept[];
 
-export class Concept {
-  id: string;
-  text: string;
-  parts: ConceptSequence;
+export type ConceptShape = number | (number | ConceptShape)[];
 
-  constructor(inputs: { text?: string; parts?: Concept[] }) {
+export class Concept {
+  key: string;
+  parts: ConceptSequence;
+  shape: ConceptShape;
+
+  constructor(inputs: { key?: string; parts?: Concept[] }) {
     const parts = inputs.parts || [];
-    const text =
+    const key =
       parts.length > 0
         ? Concept.join(inputs.parts as Concept[])
-        : inputs.text || '';
+        : inputs.key || '';
 
-    this.id = Concept.idFromText(text);
-    this.text = text;
+    this.key = key;
     this.parts = parts;
+    this.shape = Concept.computeShape(this);
   }
 
-  static idFromText(text: string): string {
-    return uuid.v5(text, UUID_NAMESPACE_OID);
+  static computeShape(concept: Concept): ConceptShape {
+    if (concept.parts.length === 0) {
+      return 0;
+    }
+
+    const subdims = concept.parts.map(Concept.computeShape);
+
+    if (subdims.every((dim) => dim === 0)) {
+      return subdims.length;
+    }
+
+    return subdims;
   }
 
-  static createAtom(text: string): Concept {
-    return new Concept({ text });
+  static createAtom(key: string): Concept {
+    return new Concept({ key });
   }
 
   static createCompound(
@@ -49,12 +57,12 @@ export class Concept {
 
   static join(parts: Concept[]): string {
     return parts
-      .map((part) => (part.parts.length >= 2 ? `[${part.text}]` : part.text))
+      .map((part) => (part.parts.length >= 2 ? `[${part.key}]` : part.key))
       .join(' ');
   }
 
   toString() {
-    return this.text;
+    return this.key;
   }
 }
 
@@ -62,7 +70,7 @@ export const NULL_CONCEPT = Concept.createAtom('');
 
 export const filterUniqueConcepts = (concepts: Concept[]): Concept[] => {
   const map = new Map<string, Concept>();
-  concepts.forEach((concept) => map.set(concept.id, concept));
+  concepts.forEach((concept) => map.set(concept.key, concept));
   return Array.from(map.values());
 };
 
@@ -70,9 +78,9 @@ export const getConceptsDeep = (topConcepts: Concept[]): Concept[] => {
   const map = new Map<string, Concept>();
 
   topConcepts.forEach((c) => {
-    map.set(c.id, c);
+    map.set(c.key, c);
     getConceptsDeep(c.parts).forEach((sub) => {
-      map.set(sub.id, sub);
+      map.set(sub.key, sub);
     });
   });
 
@@ -84,7 +92,7 @@ export const isAtom = (concept: Concept): boolean => {
 };
 
 export const isVariable = (concept: Concept): boolean => {
-  return isAtom(concept) && concept.text[0] === '$';
+  return isAtom(concept) && concept.key[0] === '$';
 };
 
 export const isPattern = (concept: Concept): boolean => {
@@ -101,5 +109,5 @@ export const isCompound = (concept: Concept): boolean => {
 };
 
 export const isTextBlock = (concept: Concept): boolean => {
-  return concept.text.slice(0, 2) + concept.text.slice(-2) === '<<>>';
+  return concept.key.slice(0, 2) + concept.key.slice(-2) === '<<>>';
 };

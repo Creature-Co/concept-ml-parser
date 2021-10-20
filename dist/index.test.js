@@ -27,7 +27,7 @@ describe('given complicated ConceptML source', () => {
     describe('when it is parsed', () => {
         test('then we should receive all permutations', () => {
             const output = parser_1.parseConcepts(source)
-                .map((c) => c.text)
+                .map((c) => c.key)
                 .sort();
             const expected = [
                 'john person',

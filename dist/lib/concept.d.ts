@@ -1,14 +1,15 @@
 export declare type ConceptSequence = Concept[];
+export declare type ConceptShape = number | (number | ConceptShape)[];
 export declare class Concept {
-    id: string;
-    text: string;
+    key: string;
     parts: ConceptSequence;
+    shape: ConceptShape;
     constructor(inputs: {
-        text?: string;
+        key?: string;
         parts?: Concept[];
     });
-    static idFromText(text: string): string;
-    static createAtom(text: string): Concept;
+    static computeShape(concept: Concept): ConceptShape;
+    static createAtom(key: string): Concept;
     static createCompound(parts: (Concept | ConceptSequence | string)[]): Concept;
     static join(parts: Concept[]): string;
     toString(): string;

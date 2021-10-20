@@ -36,7 +36,7 @@ const visitEach = (items, visitor) => {
 };
 exports.visitEach = visitEach;
 const isNullConcept = (concept) => {
-    return concept.text === '';
+    return concept.key === '';
 };
 exports.isNullConcept = isNullConcept;
 //# sourceMappingURL=util.js.map
