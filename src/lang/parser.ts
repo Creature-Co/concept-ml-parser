@@ -3,6 +3,7 @@ import { Concept, filterUniqueConcepts, NULL_CONCEPT } from '../lib/concept';
 import { parseAST } from './ast';
 import * as tokenKinds from './token-kinds';
 import { combine } from '../lib/util';
+import { applyAmpersandOperator } from '../lib/operators';
 
 import {
   ASTNode,
@@ -69,19 +70,25 @@ export const tokenTreeToConcept = (tokenTree: TokenTree): Concept | null => {
     return null;
   }
 
-  const parts = tokenTree
-    .map((branch) => {
-      return Array.isArray(branch)
-        ? tokenTreeToConcept(branch)
-        : Concept.createAtom(branch.loc.source);
-    })
-    .filter(Boolean);
+  const recurse = (branch: TokenTree) => {
+    const parts = branch
+      .map((branch) => {
+        return Array.isArray(branch)
+          ? recurse(branch)
+          : Concept.createAtom(branch.loc.source);
+      })
+      .filter(Boolean);
 
-  if (parts.length === 1) {
-    return parts[0];
-  }
+    if (parts.length === 1) {
+      return parts[0];
+    }
 
-  return Concept.createCompound(parts);
+    return Concept.createCompound(parts);
+  };
+
+  const concept = recurse(tokenTree);
+
+  return applyAmpersandOperator(concept);
 };
 
 export const astToTokenTree = (root: ASTNode): TokenTree => {
@@ -112,7 +119,8 @@ export const astToTokenTree = (root: ASTNode): TokenTree => {
         const block = node as ParentheticalPermutationBlock;
 
         block.children.forEach((child) => {
-          emitted.push(...combine(prevSubPerms, recurse(child)));
+          const combinations = combine(prevSubPerms, recurse(child));
+          emitted.push(...combinations);
         });
 
         return [];

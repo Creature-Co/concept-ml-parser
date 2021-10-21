@@ -52,3 +52,13 @@ export const visitEach = <T = any>(
 export const isNullConcept = (concept: Concept): boolean => {
   return concept.key === '';
 };
+
+export const uniqBy = <T>(items: T[], comp: (item: T) => any): T[] => {
+  const map = new Map<any, T>();
+
+  items.forEach((item) => {
+    map.set(comp(item), item);
+  });
+
+  return Array.from(map.values());
+};

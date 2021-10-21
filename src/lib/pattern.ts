@@ -1,6 +1,6 @@
-import { uniqBy } from 'lodash';
 import { ConceptSetSource, parseConcept, toConcepts } from '../lang/parser';
 import { Concept, isPattern, isVariable } from './concept';
+import { uniqBy } from './util';
 
 export interface Template<TVariable extends string> {
   patterns: Concept[];

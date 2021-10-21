@@ -11,7 +11,7 @@ describe('given complicated ConceptML source', () => {
       >> text block`;
 
   const source = `
-    {john, mary} (person) {
+    {john, mary} (person, mike knows &) {
       uses {
         javascript (
           for [{frontend, backend} development]
@@ -35,6 +35,8 @@ describe('given complicated ConceptML source', () => {
       const expected = [
         'john person',
         'mary person',
+        'mike knows john',
+        'mike knows mary',
         'john programmer',
         'mary programmer',
         'john uses javascript',

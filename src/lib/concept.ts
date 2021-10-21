@@ -8,11 +8,14 @@ export class Concept {
   shape: ConceptShape;
 
   constructor(inputs: { key?: string; parts?: Concept[] }) {
-    const parts = inputs.parts || [];
+    let parts = inputs.parts || [];
+
+    if (parts.length === 1) {
+      parts = parts[0].parts;
+    }
+
     const key =
-      parts.length > 0
-        ? Concept.join(inputs.parts as Concept[])
-        : inputs.key || '';
+      parts.length > 0 ? Concept.join(parts as Concept[]) : inputs.key || '';
 
     this.key = key;
     this.parts = parts;

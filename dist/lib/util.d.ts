@@ -9,4 +9,5 @@ export interface VisitorContext<T> {
 export declare const combine: <T = any>(left: T[][], right: T[][]) => T[][];
 export declare const visitEach: <T = any>(items: T[], visitor: (context: VisitorContext<T>) => any) => void;
 export declare const isNullConcept: (concept: Concept) => boolean;
+export declare const uniqBy: <T>(items: T[], comp: (item: T) => any) => T[];
 //# sourceMappingURL=util.d.ts.map
