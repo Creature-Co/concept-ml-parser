@@ -1,6 +1,12 @@
-import { parseConcepts } from './lang/parser';
+import { parseConcept, parseConcepts } from './lang/parser';
 
 // One big test case to start, to be refactored into smaller tests later.
+describe('text blocks', () => {
+  test('parsed as one block', () => {
+    expect(parseConcept('<<hello \nworld!>>').shape).toEqual(0);
+  });
+});
+
 describe('given complicated ConceptML source', () => {
   const textBlock1 = `<<
       Fun, a block of text!

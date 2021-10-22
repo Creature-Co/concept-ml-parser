@@ -12,7 +12,6 @@ export declare class ASTParserState {
     end(): this;
     terminatePermutation(): this;
     consumeAtomToken(token: Token): this;
-    consumeTextBlockToken(token: Token): this;
     nextPermutation(): this;
     startPermutationBlock(type: Block['type']): this;
     endPermutationBlock(): this;

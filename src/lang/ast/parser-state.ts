@@ -1,5 +1,5 @@
 import { Token, TokenError } from '../../lib/token';
-import { AtomKind, TextBlockKind } from '../token-kinds';
+import { AtomKind } from '../token-kinds';
 import { Block, Root, Permutation, Atom, TextBlock } from './nodes';
 
 export interface ASTParserContext {
@@ -58,22 +58,6 @@ export class ASTParserState {
     };
 
     this.context.permutation.children.push(atom);
-
-    return this;
-  }
-
-  consumeTextBlockToken(token: Token) {
-    if (token.kind !== TextBlockKind) {
-      throw new TokenError('Token must be a TextBlock', token);
-    }
-
-    const textBlock: TextBlock = {
-      token,
-      type: 'TextBlock',
-      text: token.loc.source,
-    };
-
-    this.context.permutation.children.push(textBlock);
 
     return this;
   }

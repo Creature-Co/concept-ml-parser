@@ -14,7 +14,6 @@ import {
   CommaKind,
   SemicolonKind,
   NewlineSeparatorKind,
-  TextBlockKind,
 } from '../token-kinds';
 
 export const parseAST = (tokens: Token[]): Root => {
@@ -26,10 +25,6 @@ export const parseAST = (tokens: Token[]): Root => {
         // Atoms and text blocks
         case AtomKind:
           state.consumeAtomToken(item);
-          break;
-
-        case TextBlockKind:
-          state.consumeTextBlockToken(item);
           break;
 
         // Permutation blocks
